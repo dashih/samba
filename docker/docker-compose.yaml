@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  samba:
+    container_name: samba
+    image: dannyshih/samba:v4.15.9
+    network_mode: bridge
+    restart: unless-stopped
+    ports:
+      # Port 445 is often blocked by firewalls
+      - "445:445"
+    environment:
+      SAMBA_USER: media
+      SAMBA_PASSWORD_FILE: /password.txt
+    volumes:
+      - ./password.txt:/password.txt
+      - ./smb.conf:/etc/samba/smb.conf
+      - samba_dev_lovegood:/shares/lovegood
+
+volumes:
+  samba_dev_lovegood:
